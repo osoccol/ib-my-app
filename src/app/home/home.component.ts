@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user';
+import { Comment } from '../models/comment';
+import { CommentService } from '../services/comment.service';
 
 @Component({
   selector: 'app-home',
@@ -9,6 +11,7 @@ import { User } from '../models/user';
 })
 export class HomeComponent implements OnInit {
   users: User[] = [];
+  comments: Comment[] = [];
   updateMode: boolean = false;
 
   _id: string = '';
@@ -16,7 +19,7 @@ export class HomeComponent implements OnInit {
   email: string = '';
   password: string = '';
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private commentService: CommentService) { }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -30,7 +33,15 @@ export class HomeComponent implements OnInit {
       .catch(err => console.log(err));
   }
 
-  updateUser(user: User) {
+  loadComments(user: User): void {
+    this.commentService.getCommentsFromEmail(user.email)
+      .then((comments) => {
+        this.comments = comments;
+      })
+      .catch(err => console.log(err));
+  }
+
+  updateUser(user: User): void {
     this.updateMode = true;
     this.name = user.name;
     this.email = user.email;
@@ -38,7 +49,7 @@ export class HomeComponent implements OnInit {
     this._id = user._id;
   }
 
-  deleteUser(user: User) {
+  deleteUser(user: User): void {
     this.userService.deleteUserById(user._id)
       .then(() => {
         this.loadUsers();

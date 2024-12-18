@@ -1,4 +1,4 @@
-<div>
+<div style="width: 40vw; display: inline-block; vertical-align: top;">
     <h1>Liste des utilisateurs</h1>
     <form>
         <input type="text" name="name" placeholder="Martin" [(ngModel)]="name">
@@ -11,7 +11,7 @@
     <ul>
         <li *ngFor="let user of users; let i = index">
             <span>{{i + 1}} - </span>
-            <span>{{user.name}} - {{user.email}}</span>
+            <span (click)="loadComments(user)">{{user.name}} - {{user.email}}</span>
             <span>
                 <button *ngIf="!updateMode" (click)="deleteUser(user)">SUPPRIMER</button>
                 <button *ngIf="!updateMode" (click)="updateUser(user)">MODIFIER</button>
@@ -19,3 +19,16 @@
         </li>
     </ul>
 </div>
+
+<div style="width: 40vw; display: inline-block;">
+    <h1>Commentaires associés</h1>
+    <ul>
+        <li *ngFor="let comment of comments; let i = index">
+            <span>{{comment.date|date:'dd/MM/yyyy - HH:mm:ss'}}</span>
+            <div>
+                <span>{{comment.text}}</span>
+            </div>
+        </li>
+    </ul>
+</div>
+
