@@ -13,6 +13,9 @@ export class HomeComponent implements OnInit {
   users: User[] = [];
   comments: Comment[] = [];
   updateMode: boolean = false;
+  asc: boolean = true;
+
+  search: string = '';
 
   _id: string = '';
   name: string = '';
@@ -57,23 +60,35 @@ export class HomeComponent implements OnInit {
       .catch(err => console.log(err));
   }
 
+  sortComments() {
+    this.comments.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    if (this.asc) {
+      this.comments.reverse();
+    } 
+    this.asc = !this.asc;
+  }
+
+  filterComments() {
+    this.comments = this.comments.filter(el => el.text.includes(this.search));
+  }
+
   saveUser(event: any) {
     event.preventDefault();
     const user = new User(this.name, this.email, this.password);
-   
+
     if (this.updateMode == true) {
       user._id = this._id;
       this.userService.updateUser(user).then(() => {
         this.loadUsers();
         this.resetForm();
       })
-      .catch(err => console.log(err));
+        .catch(err => console.log(err));
     } else {
       this.userService.createUser(user).then(() => {
         this.loadUsers();
         this.resetForm();
       })
-      .catch(err => console.log(err));
+        .catch(err => console.log(err));
     }
   }
 
