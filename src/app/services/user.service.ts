@@ -13,7 +13,9 @@ export class UserService {
 
   getAllUsers(): Promise<User[]> {
     return new Promise((resolve, reject) => {
-      this.http.get<User[]>(`${this.protocol}://${this.path}/api/user`).subscribe(
+      this.http.get<User[]>(
+        `${this.protocol}://${this.path}/api/user`
+      ).subscribe(
         (data) => {
           resolve(data);
         },
@@ -22,6 +24,45 @@ export class UserService {
         }
       )
     })
+  }
+
+  deleteUserById(id: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.delete(`${this.protocol}://${this.path}/api/user/${id}`).subscribe(
+        (data) => {
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        }
+      )
+    })
+  }
+
+  createUser(user: User): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.post(`${this.protocol}://${this.path}/api/user`, user).subscribe(
+        (data) => {
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        }
+      )
+    });
+  }
+
+  updateUser(user: User): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.put(`${this.protocol}://${this.path}/api/user/${user._id}`, user).subscribe(
+        (data) => {
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        }
+      )
+    });
   }
 
 

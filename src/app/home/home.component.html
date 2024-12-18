@@ -1,8 +1,21 @@
 <div>
     <h1>Liste des utilisateurs</h1>
+    <form>
+        <input type="text" name="name" placeholder="Martin" [(ngModel)]="name">
+        <input type="email" name="email" placeholder="Entrez votre email" [(ngModel)]="email">
+        <input type="password" name="password" placeholder="Mot de passe" [(ngModel)]="password">
+
+        <button (click)="saveUser($event)">SAUVEGARDER{{updateMode ? ' LA MODIF' : ''}}</button>
+        <button *ngIf="updateMode" (click)="updateMode = false">ANNULER MODIFICATION</button>
+    </form>
     <ul>
-        <li *ngFor="let user of users">
-            {{user.name}} - {{user.email}}
+        <li *ngFor="let user of users; let i = index">
+            <span>{{i + 1}} - </span>
+            <span>{{user.name}} - {{user.email}}</span>
+            <span>
+                <button *ngIf="!updateMode" (click)="deleteUser(user)">SUPPRIMER</button>
+                <button *ngIf="!updateMode" (click)="updateUser(user)">MODIFIER</button>
+            </span>
         </li>
     </ul>
 </div>
